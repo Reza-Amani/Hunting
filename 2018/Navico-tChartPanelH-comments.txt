@@ -1,5 +1,0 @@
-in line 8 and 9 , width and height could be unsigned
-in line 18, tBigObject should be passed as pointer or by reference, as creating a copy of it is costy (it runs a cop constructor)
-in line 21, ResizePanel could return bool to confirm if the arguments were acceptable
-in line 35, for the input and output of CalculateBorderColor, a proper enum (rather than int) is suggested to keep the colors 
-in general, a cleaner arrangement of private, public and protected members is suggested

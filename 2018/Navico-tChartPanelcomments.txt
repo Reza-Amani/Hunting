@@ -1,0 +1,21 @@
+in the header file:
+	line 8 and 9 , width and height could be unsigned
+	line 18, tBigObject should be passed as pointer or by reference, as it is expensive to create a copy of it (copy constructor is executed)
+	line 21, ResizePanel could return bool to confirm if the arguments were acceptable
+	line 35, for the input and output of CalculateBorderColor, a proper enum (rather than int) is suggested to keep the colors 
+	generally, a cleaner arrangement of private, public and protected members is suggested
+	line 41, m_cl is not a proper and explanatory name
+
+in the cpp fle:
+	an enum is suggested for border colors
+	line 14, use = operator for the struct 
+	line 16, this makes tChartPanel and tChartWidget tightly cooupled. Rather, it would be better to creat a tChartWidget in the caller and then pass the pointer to the constructor
+	line 17, same as above
+	line 20, InitialisePanelWidget() is not clear. We normally initialise the member variables in the constructor. 
+	line 25, deleting m_pChartTouchController was missed
+	line 28, the logic of CalculateBorderColor could be implemented simpler and more readable
+				also, the name of the function doesn't look very suitable, as it doesn't really calculate anything
+	line 52, the logic of ResizePanel has been unneccessarily complicated. Also, an object of tResizeParams is created without deleting
+	line 61, an obj of tWarningDialog is created in the stack. It should have been done in heap, either outside of the function or by "new"ing in the function and then delete
+	line 73, tBorder seems to be using Singleton pattern (or anti-pattern!). I know that design of tBorder is not in the scope of this code review, but continue to use this singleton is not a good decision
+	line 76, logically the width of the border should be integer. If that is true, there is no need to typecast and return float. 
