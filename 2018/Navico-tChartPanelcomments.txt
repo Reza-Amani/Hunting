@@ -5,6 +5,7 @@ in the header file:
 	line 35, for the input and output of CalculateBorderColor, a proper enum (rather than int) is suggested to keep the colors 
 	generally, a cleaner arrangement of private, public and protected members is suggested
 	line 41, m_cl is not a proper and explanatory name
+	line 15, tChartPanel doesn't look like the best explanatory name for this class
 
 in the cpp fle:
 	an enum is suggested for border colors
