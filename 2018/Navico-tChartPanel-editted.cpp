@@ -1,77 +1,69 @@
 //No need to worry about #includes
 
-#define BORDER_COLOR_RED    0
-#define BORDER_COLOR_BLUE   1
-#define BORDER_COLOR_GREEN  2
-#define BORDER_COLOR_PURPLE 3
-#define BORDER_COLOR_BLACK  4
-
-tChartPanel::tChartPanel(tBigObject const & object)
+tChartPanel::tChartPanel(tBigObject const & object, tChartWidget & _m_pChartWidget, tChartTouchController & _m_pChartTouchController)
 {
     m_PanelId = 0;
-    m_cl = BORDER_COLOR_RED;
+	m_color = tColor::BORDER_COLOR_RED;
 
-    m_Size(object.getWidth(), object.getHeight());
+	m_Size = { object.getWidth(), object.getHeight() };
 
-    m_pChartWidget = new tChartWidget();
-    m_pChartTouchController = new tChartTouchController();
+	m_pChartWidget = _m_pChartWidget;
+	m_pChartTouchController = _m_pChartTouchController;
     m_pChartCursor.reset( new tChartCursor());
     
-    InitialisePanelWidget();
+    //other Initialisations
 }
 
 tChartPanel::~tChartPanel()
 {
-    delete m_pChartWidget;
+	delete m_pChartCursor;
 }
 
-int tChartPanel::CalculateBorderColor(int colorValue)
+tColor tChartPanel::CalculateBorderColor(int colorValue)
 {
-    if( colorValue == BORDER_COLOR_RED)
+	if (colorValue > (int)tColor::BORDER_COLOR_BLACK)
     {
-        return BORDER_COLOR_RED;
-    }
-    else if (colorValue == BORDER_COLOR_BLUE)
-    {
-        return BORDER_COLOR_BLUE;
-    }
-    else if (colorValue == BORDER_COLOR_GREEN)
-    {
-        return BORDER_COLOR_GREEN;
-    }
-    else if (colorValue == BORDER_COLOR_PURPLE)
-    {
-        return BORDER_COLOR_PURPLE;
+		return BORDER_COLOR_BLACK;
     }
     else
     {
-        return BORDER_COLOR_BLACK;
+		return (tColor)colorValue;
     }
 }
 
-void tChartPanel::ResizePanel(int width, int height)
+bool tChartPanel::ResizePanel(unsigned int width, unsigned int height)
 {
-    tResizeParams* pParams = new tResizeParams(width, height);
-    m_Size.height = pParams->getHeight();
-    m_Size.width = pParams->getWidth();
+	if (width <= MAX_LENGTH && height <= MAX_LENGTH)
+	{
+		m_Size = { width, height };
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 void tChartPanel::DisplayWarningDialog()
 {
-    tWarningDialog dialog;
-    dialog.show();
+	tWarningDialog * p_dialog = new tWarningDialog();
+	if (p_dialog)
+	{
+		p_dialog->show();
+		delete p_dialog;
+	}
 }
 
 void tChartPanel::DisplayErrorDialog()
 {
-    std::unique_ptr<tErrorDialog> pDialog;
+    std::unique_ptr<tErrorDialog> pDialog;	//new
     pDialog->show();
 }
 
-float tChartPanel::CalculateBorderWidth()
+unsigned int tChartPanel::CalculateBorderWidth(const tBorder & _m_border)
 {
-    int borderWidth = (int)(tBorder::Instance()->getBorderWidth());
+	unsigned int borderWidth = _m_border.getBorderWidth();
     borderWidth += 10;
 
-    return (static_cast<float>(borderWidth)) / 2.0f;
+	return borderWidth/2;
 }

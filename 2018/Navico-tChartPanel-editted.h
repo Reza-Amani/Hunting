@@ -7,6 +7,15 @@ struct tSize
     unsigned int height;
 };
 
+enum class tColor
+{
+	BORDER_COLOR_RED,
+	BORDER_COLOR_BLUE,
+	BORDER_COLOR_GREEN,
+	BORDER_COLOR_PURPLE,
+	BORDER_COLOR_BLACK
+};
+
 // The chart panel is an abstract base class for displaying a chart in a panel.
 class tChartPanel
 {
@@ -25,21 +34,13 @@ class tChartPanel
     protected:
         virtual void InitialisePanelWidget() = 0;
 
-        //Assume there are additional (protected) methods that use each of the data members
-        //(except m_PanelId) in some way.
-        //...
-
     private:
-        int CalculateBorderColor(int color);
-
-
-    private:
-        int   m_cl;
+        int   m_color;
         tSize m_Size;
-
         std::unique_ptr<tChartCursor> m_pChartCursor;
         tChartTouchController* m_pChartTouchController;
         tChartWidget* m_pChartWidget;
+        tColor CalculateBorderColor(int color);
 };
 
 
