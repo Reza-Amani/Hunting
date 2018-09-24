@@ -38,8 +38,8 @@ class tChartPanel
         int   m_color;
         tSize m_Size;
         std::unique_ptr<tChartCursor> m_pChartCursor;
-        tChartTouchController* m_pChartTouchController;
-        tChartWidget* m_pChartWidget;
+        tChartTouchController& m_pChartTouchController;
+        tChartWidget& m_pChartWidget;
         tColor CalculateBorderColor(int color);
 };
 

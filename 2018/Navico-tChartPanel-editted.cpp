@@ -9,14 +9,13 @@ tChartPanel::tChartPanel(tBigObject const & object, tChartWidget & _m_pChartWidg
 
 	m_pChartWidget = _m_pChartWidget;
 	m_pChartTouchController = _m_pChartTouchController;
-    m_pChartCursor.reset( new tChartCursor());
+	m_pChartCursor.reset(std::unique_ptr<tChartCursor>(new tChartCursor());
     
     //other Initialisations
 }
 
 tChartPanel::~tChartPanel()
 {
-	delete m_pChartCursor;
 }
 
 tColor tChartPanel::CalculateBorderColor(int colorValue)
@@ -33,7 +32,9 @@ tColor tChartPanel::CalculateBorderColor(int colorValue)
 
 bool tChartPanel::ResizePanel(unsigned int width, unsigned int height)
 {
-	if (width <= MAX_LENGTH && height <= MAX_LENGTH)
+	//this function should be moved out of this class, as violates the SRP
+	//But, for sake of the test, I refactor and keep it for now
+	if (width <= MAX_WIDTH && height <= MAX_HEIGTH)
 	{
 		m_Size = { width, height };
 		return true;
@@ -46,18 +47,20 @@ bool tChartPanel::ResizePanel(unsigned int width, unsigned int height)
 
 void tChartPanel::DisplayWarningDialog()
 {
-	tWarningDialog * p_dialog = new tWarningDialog();
+	std::unique_ptr<tWarningDialog> p_dialog(new tWarningDialog());
 	if (p_dialog)
 	{
 		p_dialog->show();
-		delete p_dialog;
 	}
 }
 
 void tChartPanel::DisplayErrorDialog()
 {
-    std::unique_ptr<tErrorDialog> pDialog;	//new
-    pDialog->show();
+	std::unique_ptr<tErrorDialog> p_dialog(new tErrorDialog());
+	if (p_dialog)
+	{
+		p_dialog->show();
+	}
 }
 
 unsigned int tChartPanel::CalculateBorderWidth(const tBorder & _m_border)
